@@ -1,0 +1,37 @@
+# WordPress SEO-friendly URLs
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# Increase upload limits
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value max_input_vars 3000
+php_value memory_limit 256M
+
+# Security headers
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Protect wp-config.php
+<Files wp-config.php>
+order allow,deny
+deny from all
+</Files>
+
+# Protect .htaccess
+<Files ~ "^\.ht">
+order allow,deny
+deny from all
+</Files>
